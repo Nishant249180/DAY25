@@ -1,0 +1,46 @@
+1.Creating a XML file USING EMPLOYEE record for storing and tranporting of data.
+Firstly creating a PF File of the record
+
+ Columns . . . :    1  71            Edit                      TEN31LIB/TRNGSRC 
+ SEU==>                                                                STOREXML 
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R XMLREC                                                
+0002.00      A            XMLLINE       80A                                     
+0003.00      A* WILL NOT CONTAIN ANY KEY FIELD                                  
+        ****************** End of data **************************************** 
+
+	RPGLE FILE FOR XML TO STORE AND TRANSFER DATA 
+ Columns . . . :    6  76            Edit                      TEN31LIB/TRNGSRC 
+ SEU==>                                                               STOREXMLR 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPLOYEE  IF   E           K DISK                                      
+0002.00 FSTOREXML  O    E             DISK                                      
+0003.00 DXLINE            S             80A                                     
+0004.00 C                   EVAL      XLINE='<EMPLOYEE>'                        
+0005.00 C                   EVAL      XMLLINE=XLINE                             
+0006.00 C                   WRITE     XMLREC                                    
+0007.00 C     *LOVAL        SETLL     EMPREC                                    
+0008.00 C                   READ      EMPREC                                    
+0009.00 C                   DOW       NOT %EOF                                  
+0010.00 C                   EVAL      XMLLINE='<REC>'                           
+0011.00 C                   WRITE     XMLREC                                    
+0012.00 C                   EVAL      XMLLINE='<EMPID>'+%CHAR(EMPID)+'</EMPID>' 
+0013.00 C                   WRITE     XMLREC                                    
+0014.00 C                   EVAL      XMLLINE='<NAME>'+%TRIM(NAME)+'</NAME>'    
+0015.00 C                   WRITE     XMLREC                                    
+0016.00 C                   EVAL      XMLLINE='<DEPT>'+%CHAR(DEPT)+'</DEPT>'    
+0017.00 C                   WRITE     XMLREC                                    
+0018.00 C                   EVAL      XMLLINE='<SALARY>'+%CHAR(SALARY)+         
+0018.01 C                             '</SALARY>'                               
+0019.00 C                   WRITE     XMLREC                                    
+0020.00 C                   EVAL      XMLLINE='</REC>'                          
+0021.00 C                   WRITE     XMLREC                                    
+0022.00 C                   READ      EMPREC                                    
+0023.00 C                   ENDDO                                               
+0024.00 C                   EVAL      XMLLINE='</EMPLOYEE>'                     
+0025.00 C                   WRITE     XMLREC                                    
+0026.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+
